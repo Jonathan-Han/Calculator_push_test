@@ -1,0 +1,27 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - V1.0.0-Test
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create release archive
+        run: |
+          zip -r calculator-V1.0.0-Test.zip index.html styles.css script.js README.md
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: V1.0.0-Test
+          name: V1.0.0-Test
+          files: calculator-V1.0.0-Test.zip
+          generate_release_notes: true
